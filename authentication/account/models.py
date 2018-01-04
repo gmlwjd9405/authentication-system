@@ -8,7 +8,7 @@ from django.contrib.auth.models import (
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password=None):
+    def create_user(self, email, name, password=None):
         """
         Creates and saves a User with the given email and password.
         """
@@ -17,53 +17,58 @@ class UserManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
+            name=name,
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_staffuser(self, email, password):
+    def create_staffuser(self, email, name, password):
         """
         Creates and saves a staff user with the given email and password.
         """
         user = self.create_user(
-            email,
+            email=email,
+            name=name,
             password=password,
         )
         user.staff = True
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password):
+    def create_superuser(self, email, name, password):
         """
         Creates and saves a superuser with the given email and password.
         """
         user = self.create_user(
-            email,
+            email=email,
+            name=name,
             password=password,
         )
         user.staff = True
-        user.admin = True
+        user.superuser = True
         user.save(using=self._db)
         return user
 
 
 class User(AbstractBaseUser):
-    email = models.EmailField(
-        verbose_name='email address',
-        max_length=255,
-        unique=True,
-    )
+    # email = models.EmailField(
+    #     verbose_name='email address',
+    #     max_length=255,
+    #     unique=True,
+    # )
+    email = models.EmailField(max_length=255, default="", unique=True)
+    name = models.CharField(max_length=50, default="", unique=True)
     active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False) # a admin user; non super-user
-    admin = models.BooleanField(default=False) # a superuser
+    superuser = models.BooleanField(default=False) # a superuser
     # notice the absence of a "Password field", that's built in.
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = [] # Email & Password are required by default.
+    REQUIRED_FIELDS = ['name']
 
     def get_full_name(self):
         # The user is identified by their email address

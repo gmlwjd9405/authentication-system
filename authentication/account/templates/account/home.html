@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+<style>
+body {
+    background-color: #7a1b1b;
+    }
+</style>
+{% endblock styles %}
+
+
+{% block content %}
+<div class=''>
+    <h1>{{ title }}</h1>
+
+    <p><a href="{% url 'account:login' %}">로그인</a></p>
+    <p><a href="{% url 'account:signup' %}">회원가입</a></p>
+</div>
+{% endblock content %}
