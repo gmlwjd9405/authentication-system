@@ -11,9 +11,22 @@ body {
 
 {% block content %}
 <div class=''>
-    <h1>{{ title }}</h1>
-
-    <p><a href="{% url 'account:login' %}">로그인</a></p>
-    <p><a href="{% url 'account:signup' %}">회원가입</a></p>
+    <h1>HOME PAGE</h1>
+    <div>
+        <h4>Hello~ {{ request.user }}</h4>
+        <!--{{ request.user.is_anonymous }}-->
+    </div>
+    <div class='col-sm-6 col-sm-offset-3'>
+        <form method="POST" action="{% url 'account:login' %}" role="form">
+            {% csrf_token %}
+            <button class='btn btn-primary' type="submit" >Info</button>
+        </form>
+        <form method="GET" action="{% url 'account:delete' %}" role="form">
+	        <button class='btn btn-primary' type="submit" >Delete User</button>
+	    </form>
+        <form method="GET" action="{% url 'account:logout' %}" role="form">
+	        <button class='btn btn-primary' type="submit" >Logout</button>
+	    </form>
+    </div>
 </div>
 {% endblock content %}

@@ -3,6 +3,26 @@ from django import forms
 from account.models import User
 
 
+# 로그인 form
+class LoginForm(forms.ModelForm):
+    class Meta:
+        model = User
+        # 로그인 시에는 유저이름과 비밀번호만 입력 받는다.
+        fields = ['email', 'password']
+
+    email = forms.EmailField(
+        label="email",
+        strip=False,
+        widget=forms.EmailInput,
+    )
+
+    password = forms.CharField(
+        label="password",
+        strip=False,
+        widget=forms.PasswordInput,
+    )
+
+
 # 회원가입 시 데이터를 입력 받을 form
 class UserCreationForm(forms.ModelForm):
     class Meta:

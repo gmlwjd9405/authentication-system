@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
-from account.forms import UserCreationForm
+from account.forms import UserCreationForm, LoginForm
 from account.models import User
 
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
+from django.core.urlresolvers import reverse
 
 
 # 회원가입
@@ -45,6 +46,7 @@ def signup(request):
 
 # 회원탈퇴
 def delete_user(request):
+    print('tttttttttttt')
     user = User.objects.get(email=request.user.email)
     user.delete()
 
@@ -52,9 +54,10 @@ def delete_user(request):
 
 
 # 로그인
-def login(request):
+def signin(request):
 
     template = 'account/login.html'
+    login_form = LoginForm()
     message = ""
 
     # form 작성 후 post method 시
@@ -62,29 +65,37 @@ def login(request):
         email = request.POST['email']
         password = request.POST['password']
 
-        user = authenticate(request, username=email, password=password)
+        # 사용자 검증
+        user = authenticate(username=email, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
-                messages.success(request, _('로그인 성공!'))
-                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+                messages.success(request, '로그인 성공!')
+                # 사용자가 admin인 경우
+                if user.is_staff:
+                    return HttpResponseRedirect('/admin/')
+                # 사용자가 일반user인 경우
+                else:
+                    return HttpResponseRedirect('/home/')
             else:
                 return HttpResponse("Your account is not active, please contact the site admin")
         else:
             return HttpResponse("로그인 실패! : Your username and/or password were incorrect")
+
+    # get method 시
     else:
-        # get method
-        # TODO: 로그인 계정의 is_active에따라 redirect 다르게 설정 필요
-        # 이미 로그인을 한 상태면 home으로 이동.
         if request.user.is_anonymous:
-            context = {"message": message}
+            context = {"loginForm": login_form, "message": message}
             return render(request, template, context)
+        # 이미 로그인을 한 상태면 home으로 이동.
         else:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/home/')
+            # redirect_url = reverse('/home/')
+            # return redirect(redirect_url)
 
 
 # 로그아웃
-def logout(request):
+def log_out(request):
     logout(request)
 
     return HttpResponseRedirect('/')

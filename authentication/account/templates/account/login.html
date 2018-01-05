@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 
-{% block title %}
-{{ object.shortcode }} | {{ block.super }}
-{% endblock title %}
-
 {% block styles %}
 <style>
 body {
@@ -27,12 +23,13 @@ body {
         {{ request.user }}
         {{ request.user.is_anonymous }}
     </div>
-    <div>
+    <div class='col-sm-6 col-sm-offset-3'>
         <form method="POST" action="{% url 'account:login' %}" role="form">
             {% csrf_token %}
-            <input name="email" type="email" required>
-            <input name="password" type="password" required>
-            <button type="submit" >Login</button>
+            {{ loginForm.as_p }}
+            <!--<p>Email:  <input name="email" type="email" required></p>-->
+            <!--<p>Name:  <input name="password" type="password" required></p>-->
+            <p><button class='btn btn-primary' type="submit" >Login</button></p>
         </form>
     </div>
 </div>
