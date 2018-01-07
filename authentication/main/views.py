@@ -20,7 +20,9 @@ class MainView(View):
 class HomeView(View):
 
     def get(self, request, *args, **kwargs):
-        bg_image = "../static/img/home_background.jpg"
+        print('HomeView getttttttttttt')
+
+        bg_image = "../static/img/home_background.jpeg"
         context = {
             "title": "USER PAGE",
             "bg_image": bg_image

@@ -46,7 +46,6 @@ def signup(request):
 
 # 회원탈퇴
 def delete_user(request):
-    print('tttttttttttt')
     user = User.objects.get(email=request.user.email)
     user.delete()
 

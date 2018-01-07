@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<style>
+body {
+      background-color: #03396c;
+    }
+    .btn-link {
+      color: #ead61c;
+      text-shadow: none;
+    }
+    .btn-link:hover {
+      color: #000000;
+    }
+</style>
+{% endblock styles %}
+
+
+{% block content %}
+<div class=''>
+    <h1>{{ message }}</h1>
+    <p></p>
+    <div>
+        <form method="GET" action="{% url '/home' %}" role="form">
+	        <!--<button class='btn btn-lg btn-success' type="submit" >Home</button>-->
+            <input class='btn btn-lg btn-success' type='submit' value='Home &raquo;' >
+	    </form>
+    </div>
+</div>
+{% endblock content %}

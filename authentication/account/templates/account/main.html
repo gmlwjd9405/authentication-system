@@ -4,6 +4,8 @@
 <style>
 body {
     background-color: #7a1b1b;
+    {% if bg_image %}background-image:url({{ bg_image }});{% endif %}
+    background-size:cover;
     }
 </style>
 {% endblock styles %}

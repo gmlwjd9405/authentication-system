@@ -4,6 +4,8 @@
 <style>
 body {
     background-color: #7a1b1b;
+    {% if bg_image %}background-image:url({{ bg_image }});{% endif %}
+    background-size:cover;
     }
 </style>
 {% endblock styles %}
@@ -24,9 +26,11 @@ body {
         <form method="GET" action="{% url 'account:delete' %}" role="form">
 	        <button class='btn btn-primary' type="submit" >Delete User</button>
 	    </form>
+        <p></p>
         <form method="GET" action="{% url 'account:logout' %}" role="form">
-	        <button class='btn btn-primary' type="submit" >Logout</button>
+	        <button class='btn btn-lg btn-success' type="submit" >Logout</button>
 	    </form>
+
     </div>
 </div>
 {% endblock content %}
